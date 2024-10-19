@@ -1,0 +1,73 @@
+import Debug "mo:base/Debug";
+import Int "mo:base/Int"; // Int modülünü ekledik
+
+actor Calculator {
+
+  // Değişken: Sonucu saklayan değişken (bu, son yapılan hesaplamanın sonucunu tutar)
+  var result: Int = 0;
+
+  // Toplama işlemi: Verilen x değerini mevcut sonuca ekler
+  public shared func add(x: Int): async Int {
+    result += x; // Sonuç üzerine x eklenir
+    Debug.print("Added " # Int.toText(x) # ", result: " # Int.toText(result)); // Toplam işlemi ile ilgili debug çıktısı
+    return result; // Yeni sonucu geri döndür
+  };
+
+  // Çıkarma işlemi: Verilen x değerini mevcut sonuçtan çıkarır
+  public shared func sub(x: Int): async Int {
+    result -= x; // Sonuçtan x çıkarılır
+    Debug.print("Subtracted " # Int.toText(x) # ", result: " # Int.toText(result)); // Çıkarma işlemi ile ilgili debug çıktısı
+    return result; // Yeni sonucu geri döndür
+  };
+
+  // Çarpma işlemi: Verilen x değeriyle mevcut sonucu çarpar
+  public shared func mul(x: Int): async Int {
+    result *= x; // Sonuç x ile çarpılır
+    Debug.print("Multiplied by " # Int.toText(x) # ", result: " # Int.toText(result)); // Çarpma işlemi ile ilgili debug çıktısı
+    return result; // Yeni sonucu geri döndür
+  };
+
+  // Bölme işlemi: Verilen x değerine göre sonucu böler, ancak 0'a bölmeye izin vermez
+  public shared func div(x: Int): async ?Int {
+    if (x == 0) { // Eğer x 0 ise
+      Debug.print("Division by zero is not allowed!"); // Hata mesajı: 0'a bölme yapılmaya çalışıldı
+      return null; // 0'a bölme yapılamayacağı için null döner
+    } else {
+      result /= x; // Sonuç x'e bölünür
+      Debug.print("Divided by " # Int.toText(x) # ", result: " # Int.toText(result)); // Bölme işlemi ile ilgili debug çıktısı
+      return ?result; // Yeni sonucu geri döndür (opsiyonel olarak)
+    }
+  };
+
+  // Sonucu sıfırlama: Hesap makinesindeki tüm sonuçları sıfırlar
+  public shared func clearall(): async Int {
+    result := 0; // Sonuç sıfırlanır
+    Debug.print("Cleared result, result: 0"); // Sıfırlama işlemi ile ilgili debug çıktısı
+    return result; // Sıfırlanmış sonucu geri döndür
+  };
+
+  // Mod alma işlemi: Verilen x değeri ile sonucu mod alır (kalanını hesaplar)
+  public shared func mod(x: Int): async ?Int {
+    if (x == 0) { // Eğer x 0 ise
+      Debug.print("Modulo by zero is not allowed!"); // Hata mesajı: 0'a mod alma işlemi yapılamaz
+      return null; // 0'a mod alma işlemi yapılamayacağı için null döner
+    } else {
+      result := result % x; // Sonuç x'e bölündüğünde kalan hesaplanır
+      Debug.print("Modulo by " # Int.toText(x) # ", result: " # Int.toText(result)); // Mod işlemi ile ilgili debug çıktısı
+      return ?result; // Yeni sonucu geri döndür (opsiyonel olarak)
+    }
+  };
+
+  // Üs alma işlemi: Mevcut sonucu verilen x değeri kadar üs alır
+  public shared func pow(x: Int): async Int {
+    result := Int.pow(result, x); // Sonuç, x'inci kuvveti alınır
+    Debug.print("Raised to the power of " # Int.toText(x) # ", result: " # Int.toText(result)); // Üs alma işlemi ile ilgili debug çıktısı
+    return result; // Yeni sonucu geri döndür
+  };
+
+  // Sonucu alma işlemi: Mevcut sonucu döndürür
+  public shared func getResult(): async Int {
+    Debug.print("Current result: " # Int.toText(result)); // Mevcut sonuç debug çıktısı
+    return result; // Sonucu geri döndür
+  };
+};
